@@ -1,12 +1,18 @@
 package com.example.AEPB.dto;
 
 import com.example.AEPB.entity.Ticket;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ParkCarDTO {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ResultDTO {
 
     private boolean success;
 

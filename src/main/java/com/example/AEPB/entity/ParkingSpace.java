@@ -8,8 +8,6 @@ import lombok.Setter;
 @Setter
 public class ParkingSpace {
 
-    private Long id;
-
     private Car car;
 
 }

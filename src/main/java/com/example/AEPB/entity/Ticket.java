@@ -7,8 +7,6 @@ import lombok.Setter;
 @Setter
 public class Ticket {
 
-    private Long id;
-
     private Car car;
 
     private boolean enabled;

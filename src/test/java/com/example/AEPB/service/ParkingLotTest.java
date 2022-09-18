@@ -1,12 +1,30 @@
 package com.example.AEPB.service;
 
+import com.example.AEPB.dto.ParkCarDTO;
+import com.example.AEPB.entity.Car;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@SpringBootTest
 class ParkingLotTest {
+
+	@Autowired
+	ParkingLotService parkingLotService;
 
 	@Test
 	void should_park_success_and_get_a_ticket_when_park_car_given_a_car_and_parking_lot_has_space_and_parking_lot_not_exist_this_car () {
 
+		Car car = Car.builder().carPlateNumber("1234").build();
+
+		ParkCarDTO parkingResult = parkingLotService.parkingCar(car);
+
+		assertTrue(parkingResult.getTicket().isEnabled());
+		assertEquals("1234", parkingResult.getTicket().getCar().getCarPlateNumber());
+		assertTrue(parkingResult.isSuccess());
 	}
 
 	@Test

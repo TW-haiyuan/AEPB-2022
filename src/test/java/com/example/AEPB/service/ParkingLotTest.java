@@ -26,7 +26,6 @@ class ParkingLotTest {
 
 	@Test
 	void should_park_success_and_get_a_ticket_when_park_car_given_a_car_and_parking_lot_has_space_and_parking_lot_not_exist_this_car () throws CarExistException {
-
 		Car car = Car.builder().carPlateNumber(CAR_PLATE_NUMBER).build();
 
 		ResultDTO parkingResult = parkingLotService.parkingCar(car);
@@ -83,6 +82,17 @@ class ParkingLotTest {
 	}
 
 	@Test
+	void should_pick_up_failed_when_pick_up_car_given_a_ticket_and_ticket_is_fake () throws CarExistException, CarNotExistException {
+		Car car = Car.builder().carPlateNumber(CAR_PLATE_NUMBER).build();
+		parkingLotService.parkingCar(car);
+
+		Car anotherCar = Car.builder().carPlateNumber("aaa").build();
+		Ticket ticket = Ticket.builder().enabled(true).car(anotherCar).build();
+		ResultDTO pickUpResult = parkingLotService.pickUpCar(ticket);
+		assertFalse(pickUpResult.isSuccess());
+	}
+
+	@Test
 	void should_pick_up_failed_when_pick_up_car_given_no_ticket () throws CarNotExistException {
 		ResultDTO pickUpResult = parkingLotService.pickUpCar(null);
 
@@ -102,6 +112,7 @@ class ParkingLotTest {
 	void should_throw_exception_when_pick_up_car_given_a_ticket_and_parking_lot_not_exist_this_car () {
 		Car car = Car.builder().carPlateNumber(CAR_PLATE_NUMBER).build();
 		Ticket ticket = Ticket.builder().enabled(true).car(car).build();
+
 
 		assertThrows(CarNotExistException.class, () -> parkingLotService.pickUpCar(ticket), "This car is not exist in parking lot!");
 	}

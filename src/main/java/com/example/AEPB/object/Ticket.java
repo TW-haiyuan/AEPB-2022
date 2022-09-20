@@ -14,6 +14,4 @@ import lombok.Setter;
 public class Ticket {
 
     private String carPlateNumber;
-
-    private boolean enabled;
 }

@@ -1,5 +1,7 @@
 package com.example.AEPB;
 
+import com.example.AEPB.exception.NoCarException;
+import com.example.AEPB.exception.NoTicketException;
 import com.example.AEPB.object.Car;
 import com.example.AEPB.object.ParkingLot;
 import com.example.AEPB.object.Ticket;
@@ -13,7 +15,6 @@ import static com.example.AEPB.object.ParkingLot.PARKING_SPACE_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ParkingLotTest {
 
@@ -22,19 +23,18 @@ class ParkingLotTest {
     ParkingLot parkingLot = new ParkingLot();
 
     @Test
-    void should_park_success_and_get_a_ticket_when_park_car_given_a_car_and_parking_lot_has_space_and_parking_lot_not_exist_this_car() throws CarExistException {
+    void should_park_success_when_park_car_given_a_car_and_parking_lot_has_space_and_parking_lot_not_exist_this_car() throws CarExistException, NoCarException {
         Car car = Car.builder().carPlateNumber(CAR_PLATE_NUMBER).build();
 
         Ticket ticket = parkingLot.parkingCar(car);
 
-        assertTrue(ticket.isEnabled());
         assertEquals(CAR_PLATE_NUMBER, ticket.getCarPlateNumber());
     }
 
     @Test
-    void should_pick_up_success_and_ticket_invalid_when_pick_up_car_given_a_ticket_and_car_exists_in_parking_lot_and_ticket_exist_and_valid() throws CarNotExistException {
+    void should_pick_up_success_when_pick_up_car_given_a_ticket_and_car_exists_in_parking_lot_and_ticket_exist_and_valid() throws CarNotExistException, NoTicketException {
         Car car = Car.builder().carPlateNumber(CAR_PLATE_NUMBER).build();
-        Ticket ticket = Ticket.builder().carPlateNumber(CAR_PLATE_NUMBER).enabled(true).build();
+        Ticket ticket = Ticket.builder().carPlateNumber(CAR_PLATE_NUMBER).build();
         List<Car> parkingLot = this.parkingLot.getParkingLot();
         parkingLot.add(car);
         List<Ticket> ticketList = this.parkingLot.getTicketList();
@@ -46,7 +46,7 @@ class ParkingLotTest {
     }
 
     @Test
-    void should_park_failed_when_park_car_given_a_car_and_parking_lot_has_no_space() throws CarExistException {
+    void should_park_failed_when_park_car_given_a_car_and_parking_lot_has_no_space() throws CarExistException, NoCarException {
         List<Car> parkingLot = this.parkingLot.getParkingLot();
         for (int i = 0; i < PARKING_SPACE_SIZE; i++) {
             Car car = Car.builder().carPlateNumber(String.valueOf(i)).build();
@@ -60,33 +60,24 @@ class ParkingLotTest {
     }
 
     @Test
-    void should_park_failed_when_park_car_given_no_car_and_parking_lot_has_space() throws CarExistException {
-        Ticket ticket = parkingLot.parkingCar(null);
+    void should_throw_exception_when_park_car_given_no_car() {
 
-        assertNull(ticket);
+        assertThrows(NoCarException.class, () -> parkingLot.parkingCar(null), "This is not a car!");
     }
 
     @Test
-    void should_pick_up_failed_when_pick_up_car_given_a_ticket_and_ticket_invalid() throws CarNotExistException {
+    void should_pick_up_failed_when_pick_up_car_given_a_ticket_and_ticket_invalid_or_fake() throws CarNotExistException, NoTicketException {
 
-        Ticket ticket = Ticket.builder().enabled(false).carPlateNumber(CAR_PLATE_NUMBER).build();
+        Ticket ticket = Ticket.builder().carPlateNumber(CAR_PLATE_NUMBER).build();
 
         Car pickUpCar = parkingLot.pickUpCar(ticket);
         assertNull(pickUpCar);
     }
 
     @Test
-    void should_pick_up_failed_when_pick_up_car_given_a_ticket_and_ticket_is_fake() throws CarNotExistException {
-        Ticket ticket = Ticket.builder().enabled(true).carPlateNumber("aaa").build();
-        Car pickUpCar = parkingLot.pickUpCar(ticket);
-        assertNull(pickUpCar);
-    }
+    void should_throw_exception_when_pick_up_car_given_no_ticket() {
 
-    @Test
-    void should_pick_up_failed_when_pick_up_car_given_no_ticket() throws CarNotExistException {
-        Car pickUpCar = parkingLot.pickUpCar(null);
-
-        assertNull(pickUpCar);
+        assertThrows(NoTicketException.class, () -> parkingLot.pickUpCar(null), "There's no ticket!");
     }
 
     @Test
@@ -102,7 +93,7 @@ class ParkingLotTest {
     @Test
     void should_throw_exception_when_pick_up_car_given_a_ticket_and_parking_lot_not_exist_this_car() {
 
-        Ticket ticket = Ticket.builder().enabled(true).carPlateNumber(CAR_PLATE_NUMBER).build();
+        Ticket ticket = Ticket.builder().carPlateNumber(CAR_PLATE_NUMBER).build();
         List<Ticket> ticketList = parkingLot.getTicketList();
         ticketList.add(ticket);
 

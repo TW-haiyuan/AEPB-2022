@@ -2,6 +2,8 @@ package com.example.AEPB.object;
 
 import com.example.AEPB.exception.CarExistException;
 import com.example.AEPB.exception.CarNotExistException;
+import com.example.AEPB.exception.NoCarException;
+import com.example.AEPB.exception.NoTicketException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +19,12 @@ public class ParkingLot {
     private final List<Car> parkingLot = new ArrayList<>(PARKING_SPACE_SIZE);
     private final List<Ticket> ticketList = new ArrayList<>(PARKING_SPACE_SIZE);
 
-    public Ticket parkingCar(Car car) throws CarExistException {
-        if (Objects.isNull(car) || parkingLot.size() >= PARKING_SPACE_SIZE) {
+    public Ticket parkingCar(Car car) throws CarExistException, NoCarException {
+        if(Objects.isNull(car)) {
+            throw new NoCarException("This is not a car!");
+        }
+
+        if ( parkingLot.size() >= PARKING_SPACE_SIZE) {
             return null;
         }
 
@@ -27,14 +33,18 @@ public class ParkingLot {
         }
 
         parkingLot.add(car);
-        Ticket ticket = new Ticket(car.getCarPlateNumber(), true);
+        Ticket ticket = new Ticket(car.getCarPlateNumber());
         ticketList.add(ticket);
 
         return ticket;
     }
 
-    public Car pickUpCar(Ticket ticket) throws CarNotExistException {
-        if (Objects.isNull(ticket) || !ticket.isEnabled() || !ticketList.contains(ticket)) {
+    public Car pickUpCar(Ticket ticket) throws CarNotExistException, NoTicketException {
+        if(Objects.isNull(ticket)) {
+            throw new NoTicketException("There's no ticket!");
+        }
+
+        if ( !ticketList.contains(ticket)) {
             return null;
         }
 
@@ -45,8 +55,7 @@ public class ParkingLot {
         }
 
         parkingLot.remove(car);
-        ticket = ticketList.stream().filter(ticket1 -> carPlateNumber.equals(ticket1.getCarPlateNumber())).findAny().orElseThrow();
-        ticket.setEnabled(false);
+        ticketList.remove(ticket);
         return car;
     }
 }

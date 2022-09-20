@@ -1,6 +1,5 @@
-package com.example.AEPB.dto;
+package com.example.AEPB.object;
 
-import com.example.AEPB.entity.Ticket;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,9 +11,9 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResultDTO {
+public class Ticket {
 
-    private boolean success;
+    private String carPlateNumber;
 
-    private Ticket ticket;
+    private boolean enabled;
 }

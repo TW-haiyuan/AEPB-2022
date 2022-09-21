@@ -7,6 +7,7 @@ import com.example.AEPB.exception.NoTicketException;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public class ParkingBrother {
@@ -14,18 +15,22 @@ public class ParkingBrother {
     private final List<ParkingLot> parkingLotList = List.of(new ParkingLot(5), new ParkingLot(2), new ParkingLot(3));
 
     public Ticket parkingCar(Car car) throws NoCarException, CarExistException {
+
         for (ParkingLot parkingLot : parkingLotList) {
-            if (!parkingLot.hasNoSpace()) {
-                return parkingLot.parkingCar(car);
+            Ticket ticket = parkingLot.parkingCar(car);
+            if (Objects.nonNull(ticket)) {
+                return ticket;
             }
         }
         return null;
     }
 
     public Car pickUpCar(Ticket ticket) throws NoTicketException, CarNotExistException {
+
         for (ParkingLot parkingLot : parkingLotList) {
-            if (parkingLot.getTicketList().contains(ticket)) {
-                return parkingLot.pickUpCar(ticket);
+            Car car = parkingLot.pickUpCar(ticket);
+            if (Objects.nonNull(car)) {
+                return car;
             }
         }
         return null;

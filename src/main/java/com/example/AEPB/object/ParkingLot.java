@@ -14,47 +14,56 @@ import java.util.Objects;
 @Getter
 @Setter
 public class ParkingLot {
-    public static final int PARKING_SPACE_SIZE = 5;
+    private final int size;
+    private final List<Car> carList;
+    private final List<Ticket> ticketList;
 
-    private final List<Car> parkingLot = new ArrayList<>(PARKING_SPACE_SIZE);
-    private final List<Ticket> ticketList = new ArrayList<>(PARKING_SPACE_SIZE);
+    public ParkingLot(int size) {
+        this.size = size;
+        this.carList = new ArrayList<>(size);
+        this.ticketList = new ArrayList<>(size);
+    }
 
     public Ticket parkingCar(Car car) throws CarExistException, NoCarException {
-        if(Objects.isNull(car)) {
+        if (Objects.isNull(car)) {
             throw new NoCarException("This is not a car!");
         }
 
-        if ( parkingLot.size() >= PARKING_SPACE_SIZE) {
+        if (hasNoSpace()) {
             return null;
         }
 
-        if (parkingLot.contains(car)) {
+        if (carList.contains(car)) {
             throw new CarExistException("This car is already exist in parking lot!");
         }
 
-        parkingLot.add(car);
+        carList.add(car);
         Ticket ticket = new Ticket(car.getCarPlateNumber());
         ticketList.add(ticket);
 
         return ticket;
     }
 
+    public boolean hasNoSpace() {
+        return carList.size() >= size;
+    }
+
     public Car pickUpCar(Ticket ticket) throws CarNotExistException, NoTicketException {
-        if(Objects.isNull(ticket)) {
+        if (Objects.isNull(ticket)) {
             throw new NoTicketException("There's no ticket!");
         }
 
-        if ( !ticketList.contains(ticket)) {
+        if (!ticketList.contains(ticket)) {
             return null;
         }
 
         String carPlateNumber = ticket.getCarPlateNumber();
-        Car car  = new Car(carPlateNumber);
-        if (!parkingLot.contains(car)) {
+        Car car = new Car(carPlateNumber);
+        if (!carList.contains(car)) {
             throw new CarNotExistException("This car is not exist in parking lot!");
         }
 
-        parkingLot.remove(car);
+        carList.remove(car);
         ticketList.remove(ticket);
         return car;
     }

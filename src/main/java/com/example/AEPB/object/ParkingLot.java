@@ -67,4 +67,8 @@ public class ParkingLot {
         ticketList.remove(ticket);
         return car;
     }
+
+    public int remainingParkingSpace() {
+        return size - carList.size();
+    }
 }

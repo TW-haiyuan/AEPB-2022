@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SmartParkingBoyTest {
+class SmartParkingBoyTest {
 
     private static final String CAR_PLATE_NUMBER = "1234";
 

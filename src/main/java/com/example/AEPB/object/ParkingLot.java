@@ -58,14 +58,14 @@ public class ParkingLot {
         }
 
         String carPlateNumber = ticket.getCarPlateNumber();
-        Car car = new Car(carPlateNumber);
-        if (!carList.contains(car)) {
-            throw new CarNotExistException("This car is not exist in parking lot!");
-        }
+        Car returnCar = carList.stream()
+                .filter(car -> carPlateNumber.equals(car.getCarPlateNumber()))
+                .findFirst()
+                .orElseThrow(() -> new CarNotExistException("This car is not exist in parking lot!"));
 
-        carList.remove(car);
+        carList.remove(returnCar);
         ticketList.remove(ticket);
-        return car;
+        return returnCar;
     }
 
     public int remainingParkingSpace() {

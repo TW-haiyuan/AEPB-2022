@@ -4,7 +4,7 @@ import com.example.AEPB.exception.PickUpCarFailedException;
 
 import java.util.List;
 
-public class Robot extends BaseParkingBrother{
+public class Robot extends BaseParkingBrother {
 
     public Robot(List<ParkingLot> parkingLotList) {
         super(parkingLotList);

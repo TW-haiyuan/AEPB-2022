@@ -1,6 +1,10 @@
 package com.example.AEPB.object;
 
-import com.example.AEPB.exception.*;
+import com.example.AEPB.exception.CarExistException;
+import com.example.AEPB.exception.CarNotExistException;
+import com.example.AEPB.exception.NoCarException;
+import com.example.AEPB.exception.NoTicketException;
+import com.example.AEPB.exception.PickUpCarFailedException;
 
 import java.util.List;
 import java.util.Objects;
@@ -9,7 +13,6 @@ public abstract class BaseParkingBrother {
     private final List<ParkingLot> parkingLotList;
 
     BaseParkingBrother(List<ParkingLot> parkingLotList) {
-        super();
         this.parkingLotList = parkingLotList;
     }
 
@@ -30,7 +33,6 @@ public abstract class BaseParkingBrother {
     }
 
     public Car pickUpCar(Ticket ticket) throws NoTicketException, CarNotExistException, PickUpCarFailedException {
-
         for (ParkingLot parkingLot : parkingLotList) {
             Car car = parkingLot.pickUpCar(ticket);
             if (Objects.nonNull(car)) {

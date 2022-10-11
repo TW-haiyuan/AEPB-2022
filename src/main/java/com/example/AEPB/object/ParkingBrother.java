@@ -6,7 +6,7 @@ import com.example.AEPB.exception.NoCarException;
 import java.util.List;
 import java.util.Objects;
 
-public class ParkingBrother extends BaseParkingBrother{
+public class ParkingBrother extends BaseParkingBrother {
 
     private final List<ParkingLot> parkingLotList;
 
@@ -17,7 +17,6 @@ public class ParkingBrother extends BaseParkingBrother{
 
     @Override
     public Ticket parkingCar(Car car) throws NoCarException, CarExistException {
-
         for (ParkingLot parkingLot : parkingLotList) {
             Ticket ticket = parkingLot.parkingCar(car);
             if (Objects.nonNull(ticket)) {
@@ -26,6 +25,4 @@ public class ParkingBrother extends BaseParkingBrother{
         }
         return null;
     }
-
-
 }

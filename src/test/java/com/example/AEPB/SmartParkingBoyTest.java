@@ -1,9 +1,6 @@
 package com.example.AEPB;
 
-import com.example.AEPB.exception.CarExistException;
-import com.example.AEPB.exception.CarNotExistException;
-import com.example.AEPB.exception.NoCarException;
-import com.example.AEPB.exception.NoTicketException;
+import com.example.AEPB.exception.*;
 import com.example.AEPB.object.Car;
 import com.example.AEPB.object.ParkingLot;
 import com.example.AEPB.object.SmartParkingBoy;
@@ -12,9 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SmartParkingBoyTest {
 
@@ -60,7 +55,7 @@ class SmartParkingBoyTest {
     }
 
     @Test
-    void should_pick_up_success_when_pick_up_car_given_a_ticket() throws NoTicketException, CarNotExistException, NoCarException, CarExistException {
+    void should_pick_up_success_when_pick_up_car_given_a_ticket() throws NoTicketException, CarNotExistException, NoCarException, CarExistException, PickUpCarFailedException {
         SmartParkingBoy smartParkingBoy = new SmartParkingBoy(List.of(new ParkingLot(5), new ParkingLot(2), new ParkingLot(3)));
 
         Car car = Car.builder().carPlateNumber(CAR_PLATE_NUMBER).build();
@@ -90,7 +85,7 @@ class SmartParkingBoyTest {
     }
 
     @Test
-    void should_pick_up_failed_when_pick_up_car_given_a_ticket_and_ticket_invalid_or_fake() throws CarNotExistException, NoTicketException {
+    void should_pick_up_failed_when_pick_up_car_given_a_ticket_and_ticket_invalid_or_fake() throws CarNotExistException, NoTicketException, PickUpCarFailedException {
         SmartParkingBoy smartParkingBoy = new SmartParkingBoy(List.of(new ParkingLot(5), new ParkingLot(2), new ParkingLot(3)));
 
         Ticket ticket = Ticket.builder().carPlateNumber(CAR_PLATE_NUMBER).build();

@@ -4,15 +4,17 @@ import com.example.AEPB.exception.CarExistException;
 import com.example.AEPB.exception.CarNotExistException;
 import com.example.AEPB.exception.NoCarException;
 import com.example.AEPB.exception.NoTicketException;
-import lombok.Getter;
 
 import java.util.List;
 import java.util.Objects;
 
-@Getter
 public class ParkingBrother {
 
-    private final List<ParkingLot> parkingLotList = List.of(new ParkingLot(5), new ParkingLot(2), new ParkingLot(3));
+    private final List<ParkingLot> parkingLotList;
+
+    public ParkingBrother(List<ParkingLot> parkingLotList) {
+        this.parkingLotList = parkingLotList;
+    }
 
     public Ticket parkingCar(Car car) throws NoCarException, CarExistException {
 

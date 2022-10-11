@@ -4,15 +4,11 @@ import com.example.AEPB.exception.CarExistException;
 import com.example.AEPB.exception.CarNotExistException;
 import com.example.AEPB.exception.NoCarException;
 import com.example.AEPB.exception.NoTicketException;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Getter
-@Setter
 public class ParkingLot {
     private final int size;
     private final List<Car> carList;

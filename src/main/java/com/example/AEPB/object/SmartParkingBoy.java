@@ -8,11 +8,17 @@ import java.util.List;
 
 public class SmartParkingBoy extends ParkingBrother {
 
+    private final List<ParkingLot> parkingLotList;
+
+    public SmartParkingBoy(List<ParkingLot> parkingLotList) {
+        super(parkingLotList);
+        this.parkingLotList = parkingLotList;
+    }
+
     @Override
     public Ticket parkingCar(Car car) throws NoCarException, CarExistException {
         int maxEmptySpace = 0;
         int parkingLotIndexWithMostEmptySpace = -1;
-        List<ParkingLot> parkingLotList = getParkingLotList();
         for (int i = 0; i < parkingLotList.size(); i++) {
             int remainingParkingSpace = parkingLotList.get(i).remainingParkingSpace();
             if (remainingParkingSpace > maxEmptySpace) {
